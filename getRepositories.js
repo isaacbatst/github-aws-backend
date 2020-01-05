@@ -6,20 +6,8 @@ module.exports.handle = async ({
   queryStringParameters: { username = "isaacbatst" }
 }) => {
   try {
-    const userResponse = await fetch(
-      `https://api.github.com/users/${username}`
-    );
-
-    if (userResponse.status !== 200) {
-      throw new Error("User not found");
-    }
-
-    const reposResponse = await fetch(
-      `https://api.github.com/users/${username}/repos`
-    );
-
-    const user = await userResponse.json();
-    const repos = await reposResponse.json();
+    const user = await getUser(username);
+    const repos = await getRepos(username);
 
     return {
       statusCode: 200,
@@ -37,3 +25,23 @@ module.exports.handle = async ({
     };
   }
 };
+
+const getUser = async username => {
+  const userResponse = await fetch(
+    `https://api.github.com/users/${username}`
+  );
+
+  if (userResponse.status !== 200) {
+    throw new Error("User not found");
+  }
+
+  return await userResponse.json();
+}
+
+const getRepos = async username => {
+  const reposResponse = await fetch(
+    `https://api.github.com/users/${username}/repos`
+  );
+
+  return await reposResponse.json();
+}
