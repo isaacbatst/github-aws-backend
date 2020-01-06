@@ -11,9 +11,11 @@ functions:
       - http:
           path: github/users/{username}
           method: get
+          cors: true
   getRepos:
     handler: getRepos.handle
     events:
       - http:
           path: github/users/{username}/repos
           method: get
+          cors: true
