@@ -37,7 +37,7 @@ const getUser = async username => {
   if (response.status !== 200) {
     throw new RequestError({
       statusCode: response.status,
-      message: response.statusText
+      message: `Github says: ${response.statusText}` 
     });
   }
 
