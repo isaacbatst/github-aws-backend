@@ -2,32 +2,33 @@
 
 const fetch = require("node-fetch");
 
-const errorResponseGenerator = require("./ErrorResponseGenerator");
-const RequestError = require("./ResquestError");
+const { generateErrorResponse } = require("./classes/ErrorResponseGenerator");
+const { validateRequest } = require("./classes/RequestValidator");
 
-module.exports.handle = async ({ queryStringParameters }) => {
+const RequestError = require("./classes/RequestError");
+
+module.exports.handle = async ({ pathParameters }) => {
   try {
-
-    if (!paramsAreValid(queryStringParameters)) {
+    if (!isRequestValid(pathParameters)) {
       throw new RequestError({ statusCode: 400, message: "Invalid params" });
     }
 
-    const user = await getUser(username);
+    const user = await getUser(pathParameters.username);
 
     return {
       statusCode: 200,
       body: JSON.stringify({ user })
     };
   } catch (error) {
-    return errorResponseGenerator(error);
+    return generateErrorResponse(error);
   }
 };
 
-const paramsAreValid = queryStringParameters => {
-  return (
-    !queryStringParameters.username ||
-    queryStringParameters.username.trim().length < 1
-  );
+const isRequestValid = pathParameters => {
+  return validateRequest({
+    requiredParams: ["username"],
+    receivedParams: pathParameters
+  });
 };
 
 const getUser = async username => {
