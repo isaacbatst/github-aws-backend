@@ -3,16 +3,15 @@ const generateErrorResponse = error => {
     case "RequestError":
       return {
         statusCode: error.statusCode,
-        body: {
-          message: error.message
-        }
+        body: JSON.stringify({ message: error.message })
       };
     default:
       return {
         statusCode: 500,
-        body: {
-          message: "Unexpected error"
-        }
+        body: JSON.stringify({
+          message: "Unexpected error",
+          errorMessage: error.message
+        })
       };
   }
 };
