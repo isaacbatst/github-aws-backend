@@ -1,5 +1,4 @@
-service: nodeless
-
+service: awscodingtest
 provider:
   name: aws
   runtime: nodejs12.x
@@ -8,3 +7,13 @@ provider:
 functions:
   getUsers:
     handler: getUser.handle
+    events:
+      - http:
+          path: github/users/{username}
+          method: get
+  getRepos:
+    handler: getRepos.handle
+    events:
+      - http:
+          path: github/users/{username}/repos
+          method: get
