@@ -4,7 +4,7 @@ const generateErrorResponse = error => {
       return {
         statusCode: error.statusCode,
         body: {
-          message: error.statusText
+          message: error.message
         }
       };
     default:
