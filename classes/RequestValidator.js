@@ -1,4 +1,9 @@
 const validateRequest = ({ requiredParams, receivedParams }) => {
+
+  if(!receivedParams){
+    return false;
+  }
+
   const qtyOfInvalidRequiredParams = requiredParams.reduce(
     (qtyOfInvalidRequiredParams, requiredParam) => {
       if (receivedParams[requiredParam]) {
