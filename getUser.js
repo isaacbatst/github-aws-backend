@@ -17,6 +17,11 @@ module.exports.handle = async ({ pathParameters }) => {
 
     return {
       statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Allow-Methods": "OPTIONS,GET"
+      },
       body: JSON.stringify({ user })
     };
   } catch (error) {
@@ -37,7 +42,7 @@ const getUser = async username => {
   if (response.status !== 200) {
     throw new RequestError({
       statusCode: response.status,
-      message: `Github says: ${response.statusText}` 
+      message: `Github says: ${response.statusText}`
     });
   }
 
