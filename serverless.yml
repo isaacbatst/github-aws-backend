@@ -26,10 +26,17 @@ functions:
           path: github/users/{username}/repos
           method: get
           cors: true
-  putRepo:
-    handler: resources/repos/put.handle
+  patchRepo:
+    handler: resources/repos/patch.handle
     events:
       - http:
           path: github/repos/{owner}/{repo}
-          method: put
+          method: patch
+          cors: true
+  deleteRepo:
+    handler: resources/repos/delete.handle
+    events:
+      - http:
+          path: github/repos/{owner}/{repo}
+          method: delete
           cors: true

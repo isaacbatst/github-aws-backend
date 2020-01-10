@@ -6,9 +6,9 @@ const generateErrorResponse = error => {
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Headers": "Content-Type",
-          "Access-Control-Allow-Methods": "OPTIONS,GET"
+          "Access-Control-Allow-Methods": "OPTIONS, GET, PUT, PATCH, DELETE, POST"
         },
-        body: JSON.stringify({ message: error.message }),
+        body: JSON.stringify({ message: error.message })
       };
     default:
       return {
@@ -16,7 +16,7 @@ const generateErrorResponse = error => {
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Headers": "Content-Type",
-          "Access-Control-Allow-Methods": "OPTIONS,GET"
+          "Access-Control-Allow-Methods": "OPTIONS, GET, PUT, PATCH, DELETE, POST"
         },
         body: JSON.stringify({
           message: "Unexpected error",

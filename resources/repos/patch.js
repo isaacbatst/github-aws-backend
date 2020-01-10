@@ -9,7 +9,7 @@ const { validateRequest } = require("../../classes/RequestValidator");
 
 const RequestError = require("../../classes/RequestError");
 
-module.exports.handle = async ({ pathParameters }) => {
+module.exports.handle = async ({ pathParameters, body }) => {
   try {
     if (!isRequestValid(pathParameters)) {
       throw new RequestError({ statusCode: 400, message: "Invalid params" });
@@ -17,12 +17,19 @@ module.exports.handle = async ({ pathParameters }) => {
 
     const repo = await getRepo(pathParameters);
 
+    const parsedBody = JSON.parse(body);
+
+    const bodyEntries = Object.entries(parsedBody);
+    bodyEntries.forEach(([key, value]) => {
+      repo[key] = value;
+    })
+
     return {
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Headers": "Content-Type",
-        "Access-Control-Allow-Methods": "OPTIONS,PUT"
+        "Access-Control-Allow-Methods": "OPTIONS,PATCH"
       },
       body: JSON.stringify({ repo })
     };
@@ -38,9 +45,9 @@ const isRequestValid = pathParameters => {
   });
 };
 
-const getRepo = async ({ username, owner }) => {
+const getRepo = async ({ repo, owner }) => {
   const response = await fetch(
-    `https://api.github.com/repos/${username}/${owner}`
+    `https://api.github.com/repos/${owner}/${repo}`
   );
 
   if (response.status !== 200) {
