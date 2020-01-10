@@ -5,17 +5,31 @@ provider:
   region: sa-east-1
   memorySize: 256
 functions:
-  getUsers:
-    handler: getUser.handle
+  hello:
+    handler: event.handle
+    events:
+      - http:
+          path: event
+          method: get
+          cors: true
+  getUser:
+    handler: resources/users/get.handle
     events:
       - http:
           path: github/users/{username}
           method: get
           cors: true
   getRepos:
-    handler: getRepos.handle
+    handler: resources/repos/get.handle
     events:
       - http:
           path: github/users/{username}/repos
           method: get
+          cors: true
+  putRepo:
+    handler: resources/repos/put.handle
+    events:
+      - http:
+          path: github/repos/{owner}/{repo}
+          method: put
           cors: true
